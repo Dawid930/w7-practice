@@ -1,35 +1,76 @@
-
-
-//object construction
-
-/* 
-const currentDate = new Date("1993/01/02")
-
-console.log(currentDate);
- */
-
-
-function Book(title, author, year, genre) {
-    this.title = title;  // this mindig objekctumra mutat vissza
-    this.author = author;
-    this.year = year;
-    this.genre = genre;
-    this.age = function () {  //ha kulon hivjuk meg akkor fut csak le mySecondFavouriteBook.age()
-        const d = new Date()
-        const currentYear = d.getFullYear()
-        return currentYear - this.year
-    }
+function Country(name, short, population, flag, continent,) {
+    this.name = name;
+    this.short = short;
+    this.population = population;
+    this.flag = flag;
+    this.continent = continent;
 }
 
-const myFavouriteBook = new Book("War and Peace", "Tolsztoj", 1867, "historical novel")
+const menuButton = () => {
+    return`
+    <button id="menuButton">
+        <svg width="40" height="40">
+            <rect width="20" height="2"/>
+            <rect width="20" height="2"/>
+            <rect width="20" height="2"/>
+        </svg>
+        <span>button</span>
+    </button>
+    `;
+};
 
-console.log(myFavouriteBook);
+//Components
+const header = (logo, button) => {
+    return `
+    <header>
+        <a id="logo">${logo}</a>
+        ${button()}
+    </header>
+    `
+}
 
-const mySecondFavouriteBook = new Book("Algebra alapjai", "Joe Algbr", 1992, "sci-fi")
 
-console.log(mySecondFavouriteBook.age());
+const countryCard = (name, short, population, flag, continent) => {
+    return`
+    <div class="card">
+        <h3>${name}</h3>
+        <h3>${short}</h3>
+        <h3>${population}</h3>
+        <h3>${continent}</h3>
+        <img src="${flag}"></img>
+    </div>
+    `
+}
 
 
 
+const loadEvent = async _ => {
+    // Get data
+    const countryRes = await fetch("https://restcountries.com/v3.1/all"); //await asincron muvelet, azert kell h megvarjuk a betoltest
+    const countryArr = await countryRes.json(); //counrtarr varja meg amig lefut a curtyres
+    //console.log(countryArr);
+
+    //Process data
+    let countries = countryArr.map(function(country){ //a map egy arrayt csinal
+        return new Country(country.name.common, country.cca3, country.population, country.flags.svg, country.continents[0])
+    })
+
+    console.log(countries);
 
 
+    let cards = "";
+    for (const country of countries){
+        cards += countryCard(country.name, country.short, country.population, country.flag, country.continent)
+    }
+
+    const rootElement = document.getElementById("root")
+    rootElement.insertAdjacentHTML("beforeend", header("Countries", menuButton));
+    rootElement.insertAdjacentHTML("beforeend", cards);
+
+    const getMenuButton = document.getElementById("menuButton")
+    getMenuButton.addEventListener("click", (event) => {
+        event.target.classList.toggle("clicked");
+    })
+}
+
+window.addEventListener("load", loadEvent)
