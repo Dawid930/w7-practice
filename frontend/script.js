@@ -22,11 +22,11 @@ const formHTML = () => {
 
 // input elonye minden platfronnmon normlisan fut, change nem fut le mindenhol 
 
-const loadEvent = _ => {
+const loadEvent = async _ => { //a fetch miatt kell az asnyc
     const rootElement = document.getElementById("root")
     rootElement.insertAdjacentHTML("beforeend", formHTML())
 
-    const from = rootElement.querySelector("form")
+    const form = rootElement.querySelector("form")
 
     const inputList = document.querySelectorAll("input") //arrayt csinal (node list, ezert plusz lepcso kell a map-nel, ==> Array.from,,, ez atalakitja a node listet array-e)
 
@@ -47,7 +47,7 @@ const loadEvent = _ => {
         input.addEventListener("input", function(event){
             console.log(event.target.value);
         })
-    })
+    });
 /* 
     rootElement.querySelector("form").addEventListener("submit", function(event){
         event.preventDefault()
@@ -72,7 +72,28 @@ const loadEvent = _ => {
     }) */
 
 
+    const nasaApiKey = "ep5OHxaacseBEOPZH1erX49uP5PxEqkdxgXKHDGT"
+    const requestedDate = "2022-02-22"
+    const apod = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaApiKey}&date=${requestedDate}`)
+    //console.log(apod);
 
+    const apodJson = await apod.json()
+    //console.log(apodJson.explanation);
+
+    // ez ugyanaz mint folotte csak mas modszerrel
+    fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaApiKey}&date=${requestedDate}`).then(
+        function(apodResponse){
+            console.log(apodResponse);
+            apodResponse.json().then(
+                function(apodResponseJson){
+                    console.log(apodResponseJson.explanation);
+                }
+            )
+        }
+
+
+
+    )
 
 }
 
