@@ -8,7 +8,7 @@ function init(mathFunction) {
 
     if (a < b){
         let c = mathFunction(b, a)
-        console.log(a);
+        console.log(c);
         /* (function(){
             var c = b - a;
             console.log(c);
@@ -37,4 +37,4 @@ const initD = (firstNumber, secondNumber) => {
 };
 
 
-init(initD);
+init(initC);
