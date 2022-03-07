@@ -26,7 +26,7 @@ const loadEvent = _ => {
     const rootElement = document.getElementById("root")
     rootElement.insertAdjacentHTML("beforeend", formHTML())
 
-    const from = rootElement.querySelector("form")
+    const form = rootElement.querySelector("form")
 
     const inputList = document.querySelectorAll("input") //arrayt csinal (node list, ezert plusz lepcso kell a map-nel, ==> Array.from,,, ez atalakitja a node listet array-e)
 
